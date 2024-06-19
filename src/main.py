@@ -2,13 +2,20 @@ from peewee import (
     SqliteDatabase,
     Model,
     CharField,
-    DateTimeField,
+    DateField,
     IntegerField,
     ForeignKeyField,
 )
 from enum import Enum
 
-db = SqliteDatabase("tracker.db")
+DATABASE = "tracker.db"
+
+db = SqliteDatabase(DATABASE)
+
+
+class BaseModel(Model):
+    class Meta:
+        database = db
 
 
 class Period(Enum):
@@ -16,18 +23,12 @@ class Period(Enum):
     WEEKLY = 2
 
 
-class Habit(Model):
+class Habit(BaseModel):
     name = CharField()
-    created_at = DateTimeField()
+    created_at = DateField()
     period = IntegerField()
 
-    class Meta:
-        database = db
 
-
-class Completion(Model):
+class Completion(BaseModel):
     habit = ForeignKeyField(Habit, backref="completions")
-    completed_at = DateTimeField()
-
-    class Meta:
-        database = db
+    date = DateField()
