@@ -1,12 +1,13 @@
+from datetime import date
 from peewee import (
     SqliteDatabase,
     Model,
     CharField,
-    DateField,
+    DateTimeField,
     IntegerField,
     ForeignKeyField,
 )
-from enum import Enum
+from enum import IntEnum
 
 DATABASE = "tracker.db"
 
@@ -18,17 +19,23 @@ class BaseModel(Model):
         database = db
 
 
-class Period(Enum):
+class Period(IntEnum):
     DAILY = 1
-    WEEKLY = 2
+    WEEKLY = 7
 
 
 class Habit(BaseModel):
-    name = CharField()
-    created_at = DateField()
+    name = CharField(unique=True)  # Name is constrained unique to avoid user confusion
+    created_at = DateTimeField(default=date.today)
     period = IntegerField()
 
 
 class Completion(BaseModel):
     habit = ForeignKeyField(Habit, backref="completions")
-    date = DateField()
+    date = DateTimeField()
+
+
+db.connect()
+db.create_tables([Habit, Completion])
+
+db.close()
