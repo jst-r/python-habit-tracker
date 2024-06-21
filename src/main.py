@@ -8,6 +8,8 @@ from peewee import (
     ForeignKeyField,
 )
 from enum import IntEnum
+import random
+from datetime import datetime, timedelta
 
 DATABASE = "tracker.db"
 
@@ -35,7 +37,41 @@ class Completion(BaseModel):
     date = DateTimeField()
 
 
+def insert_example_data():
+    RANDOM_SEED = 42
+    COMPLETION_RATE = 0.8
+
+    random.seed(RANDOM_SEED)
+    start_time = datetime.now()
+
+    for name in ["Exercise", "Brush teeth", "Drink 2 liters of water"]:
+        habit = Habit(name=name, period=Period.DAILY)
+        habit.save()
+
+        for delta in range(7 * 4):
+            if random.random() > COMPLETION_RATE:
+                print("skipped")
+                continue
+            completion = Completion(
+                habit=habit, date=start_time - timedelta(days=delta)
+            )
+            completion.save()
+
+    for name in ["Clean the house", "Call mom"]:
+        habit = Habit.create(name=name, period=Period.WEEKLY)
+        habit.save()
+
+        for delta in range(0, 7 * 4, 7):
+            if random.random() > COMPLETION_RATE:
+                continue
+            completion = Completion(date=start_time - timedelta(days=delta))
+            completion.habit = habit
+            completion.save()
+
+
 db.connect()
 db.create_tables([Habit, Completion])
+
+insert_example_data()
 
 db.close()
