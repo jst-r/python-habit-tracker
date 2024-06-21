@@ -42,7 +42,7 @@ def insert_example_data():
     COMPLETION_RATE = 0.8
 
     random.seed(RANDOM_SEED)
-    start_time = datetime.now()
+    start_time = datetime.now() - timedelta(days=7 * 5)
 
     for name in ["Exercise", "Brush teeth", "Drink 2 liters of water"]:
         habit = Habit(name=name, period=Period.DAILY)
@@ -53,7 +53,7 @@ def insert_example_data():
                 print("skipped")
                 continue
             completion = Completion(
-                habit=habit, date=start_time - timedelta(days=delta)
+                habit=habit, date=start_time + timedelta(days=delta)
             )
             completion.save()
 
@@ -64,14 +64,29 @@ def insert_example_data():
         for delta in range(0, 7 * 4, 7):
             if random.random() > COMPLETION_RATE:
                 continue
-            completion = Completion(date=start_time - timedelta(days=delta))
+            completion = Completion(date=start_time + timedelta(days=delta))
             completion.habit = habit
             completion.save()
+
+
+def get_all_habit_names():
+    return [habit.name for habit in Habit.select()]
+
+
+def get_all_habits_by_period(period: Period):
+    return [habit.name for habit in Habit.select().where(Habit.period == period)]
+
+
+def get_completion_dates(habit_name: str):
+    return [
+        completion.date
+        for completion in Habit.get(Habit.name == habit_name).completions
+    ]
 
 
 db.connect()
 db.create_tables([Habit, Completion])
 
-insert_example_data()
+print(get_completion_dates("Exercise"))
 
 db.close()
