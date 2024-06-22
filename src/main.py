@@ -77,16 +77,46 @@ def get_all_habits_by_period(period: Period):
     return [habit.name for habit in Habit.select().where(Habit.period == period)]
 
 
-def get_completion_dates(habit_name: str):
-    return [
-        completion.date
-        for completion in Habit.get(Habit.name == habit_name).completions
-    ]
+def get_completion_dates(habit: Habit):
+    return [completion.date for completion in habit.completions]
+
+
+def zero_time(dt: datetime):
+    return datetime(dt.year, dt.month, dt.day)
+
+
+def get_streaks(dates: list[datetime]) -> list[list[datetime]]:
+    streaks = []
+    curr_streak = []
+    for a, b in zip(dates, dates[1:]):
+        curr_streak.append(a)
+        a, b = zero_time(a), zero_time(b)
+        if a != b - timedelta(days=1):
+            streaks.append(curr_streak)
+            curr_streak = []
+
+    curr_streak.append(dates[-1])
+    streaks.append(curr_streak)
+
+    return streaks
+
+
+def max_streak(streaks: list[list[datetime]]):
+    return max(map(len, streaks))
 
 
 db.connect()
 db.create_tables([Habit, Completion])
 
-print(get_completion_dates("Exercise"))
+dates = get_completion_dates(Habit.get(Habit.name == "Exercise"))
+streaks = get_streaks(sorted(dates))
+
+print(*sorted(dates), sep="\n")
+print("=" * 20)
+print("=" * 20)
+
+for s in streaks:
+    print(*s, sep="\n")
+    print("=" * 20)
 
 db.close()
