@@ -7,7 +7,7 @@ db.connect()
 db.create_tables([Habit, Completion])
 
 
-dates = get_completion_dates(Habit.get(Habit.name == "Clean the house"))
+dates = get_completion_dates(Habit.get(Habit.name == "Call mom"))
 streaks = split_streaks(sorted(dates), Period.WEEKLY)
 
 print(*sorted(dates), sep="\n")

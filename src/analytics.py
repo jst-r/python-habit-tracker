@@ -11,8 +11,29 @@ def get_all_habits_by_period(period: Period):
     return [habit.name for habit in Habit.select().where(Habit.period == period)]
 
 
+def longest_streak_all(name: str) -> tuple[str, int]:
+    max_len = 0
+    max_name = "NO HABITS"
+    for habit in Habit.select():
+        dates = get_completion_dates(habit)
+        streaks = split_streaks(dates, habit.period)
+        l = max_streak_len(streaks)
+        if l > max_len:
+            max_len = l
+            max_name = habit.name
+
+    return (max_name, max_len)
+
+
+def longest_streak_by_name(name: str) -> int:
+    habit = Habit.get(Habit.name == name)
+    dates = get_completion_dates(habit)
+    streaks = split_streaks(dates, habit.period)
+    return max_streak_len(streaks)
+
+
 def get_completion_dates(habit: Habit):
-    return [completion.date for completion in habit.completions]
+    return [completion.date for completion in habit.completions]  # type: ignore
 
 
 def split_streaks(dates: list[datetime], period: Period) -> list[list[datetime]]:
@@ -41,5 +62,5 @@ def split_streaks(dates: list[datetime], period: Period) -> list[list[datetime]]
     return streaks
 
 
-def max_streak(streaks: list[list[datetime]]):
+def max_streak_len(streaks: list[list[datetime]]):
     return max(map(len, streaks))
