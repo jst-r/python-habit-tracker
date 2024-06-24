@@ -1,3 +1,4 @@
 venv/
 tracker.db
 .vscode
+**/__pycache__
