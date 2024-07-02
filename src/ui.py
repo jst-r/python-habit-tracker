@@ -5,6 +5,15 @@ from data_model import insert_example_data
 from period import Period
 from tracking import new_habit
 
+PERIOD_OPTIONS = ["daily", "d", "weekly", "w"]
+PERIOD_CHOICE = click.Choice(PERIOD_OPTIONS, case_sensitive=False)
+PERIOD_FROM_OPTION = {
+    "daily": Period.DAILY,
+    "d": Period.DAILY,
+    "weekly": Period.WEEKLY,
+    "w": Period.WEEKLY,
+}
+
 
 @click.group()
 def cli():
@@ -27,18 +36,18 @@ def init():
 @click.option(
     "--period",
     "-p",
-    type=click.Choice(["daily", "d", "weekly", "w"], case_sensitive=False),
+    type=PERIOD_CHOICE,
     required=True,
     help="How often do you plan to complete this habit",
 )
-def add(name: str, period: Period):
+def add(name: str, period: str):
     """
     Create a new habit with the provided name and period.
 
     Example: add "Do the dishes" -p d
     """
     try:
-        new_habit(name, period)
+        new_habit(name, PERIOD_FROM_OPTION[period])
     except peewee.IntegrityError:
         click.echo("A habit with this name already exists")
 
