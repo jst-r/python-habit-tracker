@@ -1,9 +1,9 @@
 import click
 import peewee
 
-from data_model import insert_example_data
+import data_model
 from period import Period
-from tracking import new_habit
+from tracking import delete_habit, new_habit
 
 PERIOD_OPTIONS = ["daily", "d", "weekly", "w"]
 PERIOD_CHOICE = click.Choice(PERIOD_OPTIONS, case_sensitive=False)
@@ -28,7 +28,7 @@ def init():
     """
     Add example data to the tracker.
     """
-    insert_example_data()
+    data_model.insert_example_data()
 
 
 @cli.command()
@@ -48,13 +48,19 @@ def add(name: str, period: str):
     """
     try:
         new_habit(name, PERIOD_FROM_OPTION[period])
-    except peewee.IntegrityError:
+    except data_model.Habit.DoesNotExist:  # type: ignore ruff isn't smart enough to know it's there
         click.echo("A habit with this name already exists")
 
 
 @cli.command()
-def remove():
-    pass
+@click.argument("name")
+def delete(name: str):
+    """Remove a habit with a given name and all corresponding completions"""
+    try:
+        delete_habit(name)
+        click.echo(f"Deleted the habit '{name}' and all corresponding completions")
+    except data_model.Habit.DoesNotExist:  # type: ignore ruff isn't smart enough to know it's there
+        click.echo("Couldn't find a habit with this name")
 
 
 @cli.command()
