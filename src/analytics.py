@@ -17,7 +17,7 @@ def make_period_selector(period: Period) -> Selector:
     return selector
 
 
-def get_names(selector: Selector) -> list[str]:
+def get_habit_names(selector: Selector) -> list[str]:
     return [str(habit.name) for habit in selector()]
 
 

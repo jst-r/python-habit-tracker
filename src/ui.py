@@ -1,6 +1,7 @@
 import click
 import peewee
 
+from analytics import get_habit_names, make_period_selector, select_all
 import data_model
 from period import Period
 from tracking import delete_habit, new_habit
@@ -64,8 +65,24 @@ def delete(name: str):
 
 
 @cli.command()
-def list():
-    pass
+@click.option(
+    "--period",
+    "-p",
+    type=PERIOD_CHOICE,
+    help="Only list habits with this period",
+)
+def list(period: str | None):
+    match period:
+        case None:
+            selector = select_all
+        case p:
+            selector = make_period_selector(PERIOD_FROM_OPTION[p])
+
+    names = get_habit_names(selector)
+
+    click.echo("Here is the list of habits:")
+    for name in names:
+        click.echo("\t" + name)
 
 
 @cli.command()
