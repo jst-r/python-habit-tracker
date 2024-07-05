@@ -1,14 +1,24 @@
 from datetime import datetime
+from typing import Callable
 from data_model import Habit
 from period import PERIOD_META, Period
 
-
-def get_all_habit_names():
-    return [habit.name for habit in Habit.select()]
+type Selector = Callable[[], list[Habit]]
 
 
-def get_all_habits_by_period(period: Period):
-    return [habit.name for habit in Habit.select().where(Habit.period == period)]
+def select_all() -> list[Habit]:
+    return list(Habit.select())
+
+
+def make_period_selector(period: Period) -> Selector:
+    def selector():
+        return list(Habit.select().where(Habit.period == period))
+
+    return selector
+
+
+def get_names(selector: Selector) -> list[str]:
+    return [str(habit.name) for habit in selector()]
 
 
 def longest_streak_all(name: str) -> tuple[str, int]:
@@ -32,7 +42,7 @@ def longest_streak_by_name(name: str) -> int:
     return max_streak_len(streaks)
 
 
-def get_completion_dates(habit: Habit):
+def get_completion_dates(habit: Habit) -> list[datetime]:
     return [completion.date for completion in habit.completions]  # type: ignore
 
 
@@ -62,5 +72,5 @@ def split_streaks(dates: list[datetime], period: Period) -> list[list[datetime]]
     return streaks
 
 
-def max_streak_len(streaks: list[list[datetime]]):
+def max_streak_len(streaks: list[list[datetime]]) -> int:
     return max(map(len, streaks))
