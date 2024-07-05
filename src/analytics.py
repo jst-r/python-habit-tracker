@@ -21,15 +21,15 @@ def get_habit_names(selector: Selector) -> list[str]:
     return [str(habit.name) for habit in selector()]
 
 
-def longest_streak_all(name: str) -> tuple[str, int]:
+def longest_streak_all() -> tuple[str, int]:
     max_len = 0
     max_name = "NO HABITS"
     for habit in Habit.select():
         dates = get_completion_dates(habit)
         streaks = split_streaks(dates, habit.period)
-        l = max_streak_len(streaks)
-        if l > max_len:
-            max_len = l
+        lenght = max_streak_len(streaks) * PERIOD_META[habit.period].length.days
+        if lenght > max_len:
+            max_len = lenght
             max_name = habit.name
 
     return (max_name, max_len)
