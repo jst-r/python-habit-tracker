@@ -1,7 +1,13 @@
 import click
 import peewee
 
-from analytics import get_habit_names, make_period_selector, select_all
+from analytics import (
+    get_habit_names,
+    longest_streak_all,
+    longest_streak_by_name,
+    make_period_selector,
+    select_all,
+)
 import data_model
 from period import Period
 from tracking import delete_habit, new_habit
@@ -86,5 +92,20 @@ def list(period: str | None):
 
 
 @cli.command()
-def streak():
-    pass
+@click.option("--name", "-n", type=str)
+def streak(name: str | None):
+    """
+    Find the longest streak.
+    If no name name is provided, searches across all habits.
+    If a name is provided, returns the longest streak for that habit.
+    """
+    if name is not None:
+        length = longest_streak_by_name(name)
+        click.echo(
+            f"Longest streak for the habit '{name}' is {length} days. Great job!"
+        )
+    else:
+        name, length = longest_streak_all()
+        click.echo(
+            f"Habit with the longest streak is '{name}' at {length} days in a row. Great job!"
+        )
