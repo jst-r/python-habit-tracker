@@ -78,11 +78,10 @@ def delete(name: str):
     help="Only list habits with this period",
 )
 def list(period: str | None):
-    match period:
-        case None:
-            selector = select_all
-        case p:
-            selector = make_period_selector(PERIOD_FROM_OPTION[p])
+    if period is None:
+        selector = select_all
+    else:
+        selector = make_period_selector(PERIOD_FROM_OPTION[period])
 
     names = get_habit_names(selector)
 
@@ -105,7 +104,7 @@ def streak(name: str | None):
             f"Longest streak for the habit '{name}' is {length} days. Great job!"
         )
     else:
-        name, length = longest_streak_all()
+        habit, length = longest_streak_all()
         click.echo(
-            f"Habit with the longest streak is '{name}' at {length} days in a row. Great job!"
+            f"Habit with the longest streak is '{habit.name}' at {length} days in a row. Great job!"
         )
