@@ -46,7 +46,6 @@ def insert_example_data():
 
         for delta in range(7 * 4):
             if random.random() > COMPLETION_RATE:
-                print("skipped")
                 continue
             completion = Completion(
                 habit=habit, date=start_time + timedelta(days=delta)

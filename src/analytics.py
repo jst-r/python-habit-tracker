@@ -25,9 +25,7 @@ def longest_streak_all() -> tuple[Habit, int]:
     max_len = 0
     max_habit = None
     for habit in Habit.select():
-        dates = get_completion_dates(habit)
-        streaks = split_streaks(dates, habit.period)
-        lenght = max_streak_len(streaks) * habit.period.meta.length.days
+        lenght = find_longest_streak(habit) * Period(habit.period).meta.length.days
         if lenght > max_len:
             max_len = lenght
             max_habit = habit.name
@@ -38,10 +36,9 @@ def longest_streak_all() -> tuple[Habit, int]:
     return (max_habit, max_len)
 
 
-def longest_streak_by_name(name: str) -> int:
-    habit = Habit.get(Habit.name == name)
+def find_longest_streak(habit: Habit) -> int:
     dates = get_completion_dates(habit)
-    streaks = split_streaks(dates, habit.period)
+    streaks = split_streaks(dates, Period(habit.period))
     return max_streak_len(streaks)
 
 

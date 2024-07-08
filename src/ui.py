@@ -4,11 +4,12 @@ import peewee
 from analytics import (
     get_habit_names,
     longest_streak_all,
-    longest_streak_by_name,
+    find_longest_streak,
     make_period_selector,
     select_all,
 )
 import data_model
+from data_model import Habit
 from period import Period
 from tracking import delete_habit, new_habit
 
@@ -99,7 +100,9 @@ def streak(name: str | None):
     If a name is provided, returns the longest streak for that habit.
     """
     if name is not None:
-        length = longest_streak_by_name(name)
+        habit = Habit.get(Habit.name == name)
+
+        length = find_longest_streak(habit)
         click.echo(
             f"Longest streak for the habit '{name}' is {length} days. Great job!"
         )
