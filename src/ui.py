@@ -100,12 +100,15 @@ def streak(name: str | None):
     If a name is provided, returns the longest streak for that habit.
     """
     if name is not None:
-        habit = Habit.get(Habit.name == name)
+        try:
+            habit = Habit.get(Habit.name == name)
 
-        length = find_longest_streak(habit)
-        click.echo(
-            f"Longest streak for the habit '{name}' is {length} days. Great job!"
-        )
+            length = find_longest_streak(habit)
+            click.echo(
+                f"Longest streak for the habit '{name}' is {length} days. Great job!"
+            )
+        except data_model.Habit.DoesNotExist:  # type: ignore ruff isn't smart enough to know it's there
+            click.echo("Couldn't find a habit with this name")
     else:
         habit, length = longest_streak_all()
         click.echo(
