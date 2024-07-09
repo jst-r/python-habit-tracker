@@ -56,7 +56,7 @@ def add(name: str, period: str):
     """
     try:
         new_habit(name, PERIOD_FROM_OPTION[period])
-    except data_model.Habit.DoesNotExist:  # type: ignore ruff isn't smart enough to know it's there
+    except peewee.IntegrityError:
         click.echo("A habit with this name already exists")
 
 
