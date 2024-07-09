@@ -105,12 +105,12 @@ def streak(name: str | None):
 
             length = find_longest_streak(habit)
             click.echo(
-                f"Longest streak for the habit '{name}' is {length} days. Great job!"
+                f"Longest streak for the habit '{name}' is {length} {Period(habit.period).meta.unit}. Great job!"
             )
         except data_model.Habit.DoesNotExist:  # type: ignore ruff isn't smart enough to know it's there
             click.echo("Couldn't find a habit with this name")
     else:
         habit, length = longest_streak_all()
         click.echo(
-            f"Habit with the longest streak is '{habit.name}' at {length} days in a row. Great job!"
+            f"Habit with the longest streak is '{habit.name}' at {length} {Period(habit.period).meta.unit} in a row. Great job!"
         )
