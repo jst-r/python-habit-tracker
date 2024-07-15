@@ -18,19 +18,20 @@ class Period(IntEnum):
 
     @property
     def meta(self) -> PeriodMetadata:
-        return __PERIOD_META[self]
+        return _PERIOD_META[self]
 
 
 def zero_time(timestamp: datetime) -> datetime:
     return datetime(timestamp.year, timestamp.month, timestamp.day)
 
 
-def last_monday(timestamp) -> datetime:
+def last_monday(timestamp: datetime) -> datetime:
+    timestamp = zero_time(timestamp)
     days_since_monday = timestamp.weekday()  # Monday is 0, Sunday is 6
     return timestamp - timedelta(days=days_since_monday)
 
 
-__PERIOD_META = {
+_PERIOD_META = {
     Period.DAILY: PeriodMetadata(
         length=timedelta(days=1), get_period_start=zero_time, unit="days"
     ),
