@@ -2,3 +2,4 @@ venv/
 tracker.db
 .vscode
 **/__pycache__
+**/*.egg-info

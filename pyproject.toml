@@ -4,4 +4,7 @@ version = "0.1.0"
 dependencies = ["click", "peewee"]
 
 [project.scripts]
-habit = "src.main:main"
+habit = "main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
