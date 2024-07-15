@@ -21,11 +21,11 @@ class Period(IntEnum):
         return __PERIOD_META[self]
 
 
-def zero_time(timestamp: datetime):
+def zero_time(timestamp: datetime) -> datetime:
     return datetime(timestamp.year, timestamp.month, timestamp.day)
 
 
-def last_monday(timestamp):
+def last_monday(timestamp) -> datetime:
     days_since_monday = timestamp.weekday()  # Monday is 0, Sunday is 6
     return timestamp - timedelta(days=days_since_monday)
 
