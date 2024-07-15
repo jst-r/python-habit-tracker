@@ -41,7 +41,7 @@ class Habit(BaseModel):
 
 class Completion(BaseModel):
     habit = ForeignKeyField(Habit, backref="completions")
-    date = DateTimeField()
+    timestamp = DateTimeField()
 
 
 def insert_example_data():
@@ -59,7 +59,7 @@ def insert_example_data():
             if random.random() > COMPLETION_RATE:
                 continue
             completion = Completion(
-                habit=habit, date=start_time + timedelta(days=delta)
+                habit=habit, timestamp=start_time + timedelta(days=delta)
             )
             completion.save()
 
@@ -70,6 +70,6 @@ def insert_example_data():
         for delta in range(0, 7 * 4, 7):
             if random.random() > COMPLETION_RATE:
                 continue
-            completion = Completion(date=start_time + timedelta(days=delta))
+            completion = Completion(timestamp=start_time + timedelta(days=delta))
             completion.habit = habit
             completion.save()

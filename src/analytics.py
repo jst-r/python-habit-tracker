@@ -37,24 +37,24 @@ def longest_streak_all() -> tuple[Habit, int]:
 
 
 def find_longest_streak(habit: Habit) -> int:
-    dates = get_completion_dates(habit)
-    streaks = split_streaks(dates, Period(habit.period))
+    timestamps = get_completion_timestamps(habit)
+    streaks = split_streaks(timestamps, Period(habit.period))
     return max_streak_len(streaks)
 
 
-def get_completion_dates(habit: Habit) -> list[datetime]:
-    return [completion.date for completion in habit.completions]  # type: ignore
+def get_completion_timestamps(habit: Habit) -> list[datetime]:
+    return [completion.timestamp for completion in habit.completions]  # type: ignore
 
 
-def split_streaks(dates: list[datetime], period: Period) -> list[list[datetime]]:
+def split_streaks(timestamps: list[datetime], period: Period) -> list[list[datetime]]:
     dt = period.meta.length
     get_start = period.meta.get_period_start
 
     streaks = []
-    curr_streak = [dates[0]]
-    streak_start = get_start(dates[0])
+    curr_streak = [timestamps[0]]
+    streak_start = get_start(timestamps[0])
 
-    for t in dates[1:]:
+    for t in timestamps[1:]:
         if t < streak_start + len(curr_streak) * dt:
             # habit was marked multiple times in a single period
             continue
