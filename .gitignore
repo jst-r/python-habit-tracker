@@ -1,5 +1,5 @@
-venv/
-tracker.db
+venv
+.pytest_chache
 .vscode
 **/__pycache__
 **/*.egg-info
