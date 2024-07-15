@@ -34,7 +34,8 @@ class BaseModel(Model):
 
 
 class Habit(BaseModel):
-    name = CharField(unique=True)  # Name is constrained unique to avoid user confusion
+    # Name is constrained unique to avoid user confusion
+    name = CharField(unique=True)
     created_at = DateTimeField(default=date.today)
     period = IntegerField()
 
