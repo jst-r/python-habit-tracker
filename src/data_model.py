@@ -28,6 +28,7 @@ DATABASE_PATH = get_db_path()
 db = SqliteDatabase(DATABASE_PATH)
 
 
+# Makes models a bit DRYer
 class BaseModel(Model):
     class Meta:
         database = db
