@@ -52,6 +52,8 @@ def add(name: str, period: str):
     """
     Create a new habit with the provided name and period.
 
+    If the name is multiple words long, please surround it with quotes.
+
     Example: add "Do the dishes" -p d
     """
     try:
@@ -63,7 +65,7 @@ def add(name: str, period: str):
 @cli.command()
 @click.argument("name")
 def delete(name: str):
-    """Remove a habit with a given name and all corresponding completions"""
+    """Remove a habit with a given name and all corresponding completions."""
     try:
         delete_habit(name)
         click.echo(f"Deleted the habit '{name}' and all corresponding completions")
@@ -76,9 +78,10 @@ def delete(name: str):
     "--period",
     "-p",
     type=PERIOD_CHOICE,
-    help="Only list habits with this period",
+    help="Only list habits with selected period",
 )
 def list(period: str | None):
+    """List habits."""
     if period is None:
         selector = select_all
     else:
