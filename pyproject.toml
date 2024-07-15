@@ -1,0 +1,7 @@
+[project]
+name = "python-habit-tracker"
+version = "0.1.0"
+dependencies = ["click", "peewee"]
+
+[project.scripts]
+habit = "src.main:main"
