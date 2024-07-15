@@ -13,14 +13,18 @@ import os
 
 from period import Period
 
-# By default store data in the users home directory, can be overwritten with the env var below
-if path := os.getenv("PYTHON_HABIT_TRACKER_DB_PATH"):
-    DATABASE_PATH = path
-else:
+
+def get_db_path():
+    """By default a folder in the users home directory, can be overwritten with the env variable `PYTHON_HABIT_TRACKER_DB_PATH`"""
+    if path := os.getenv("PYTHON_HABIT_TRACKER_DB_PATH"):
+        return path
+
     user_data_dir = os.path.join(os.path.expanduser("~"), ".python_habit_tracker")
     os.makedirs(user_data_dir, exist_ok=True)
-    DATABASE_PATH = os.path.join(user_data_dir, "database.db")
+    return os.path.join(user_data_dir, "database.db")
 
+
+DATABASE_PATH = get_db_path()
 db = SqliteDatabase(DATABASE_PATH)
 
 
