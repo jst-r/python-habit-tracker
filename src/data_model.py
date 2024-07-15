@@ -9,12 +9,19 @@ from peewee import (
 )
 import random
 from datetime import datetime, timedelta
+import os
 
 from period import Period
 
-DATABASE = "tracker.db"
+# By default store data in the users home directory, can be overwritten with the env var below
+if path := os.getenv("PYTHON_HABIT_TRACKER_DB_PATH"):
+    DATABASE_PATH = path
+else:
+    user_data_dir = os.path.join(os.path.expanduser("~"), ".python_habit_tracker")
+    os.makedirs(user_data_dir, exist_ok=True)
+    DATABASE_PATH = os.path.join(user_data_dir, "database.db")
 
-db = SqliteDatabase(DATABASE)
+db = SqliteDatabase(DATABASE_PATH)
 
 
 class BaseModel(Model):
