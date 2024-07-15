@@ -11,7 +11,7 @@ def select_all() -> list[Habit]:
 
 
 def make_period_selector(period: Period) -> Selector:
-    def selector():
+    def selector() -> list[Habit]:
         return list(Habit.select().where(Habit.period == period))
 
     return selector
