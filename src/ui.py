@@ -11,7 +11,7 @@ from analytics import (
 import data_model
 from data_model import Habit
 from period import Period
-from tracking import delete_habit, new_habit
+from tracking import delete_habit, mark_completed, new_habit
 
 PERIOD_OPTIONS = ["daily", "d", "weekly", "w"]
 PERIOD_CHOICE = click.Choice(PERIOD_OPTIONS, case_sensitive=False)
@@ -60,6 +60,16 @@ def add(name: str, period: str):
         new_habit(name, PERIOD_FROM_OPTION[period])
     except peewee.IntegrityError:
         click.echo("A habit with this name already exists")
+
+
+@cli.command
+@click.argument("name")
+def mark(name: str):
+    """Mark a habit that you have completed today."""
+    try:
+        mark_completed(name)
+    except data_model.Habit.DoesNotExist:  # type: ignore ruff isn't smart enough to know it's there
+        click.echo("Couldn't find a habit with this name")
 
 
 @cli.command()
