@@ -1,4 +1,3 @@
-from datetime import date
 from peewee import (
     SqliteDatabase,
     Model,
@@ -8,7 +7,7 @@ from peewee import (
     ForeignKeyField,
 )
 import random
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import os
 
 from period import Period
@@ -43,7 +42,7 @@ class Habit(BaseModel):
 
 class Completion(BaseModel):
     habit = ForeignKeyField(Habit, backref="completions")
-    timestamp = DateTimeField()
+    timestamp = DateTimeField(default=date.today)
 
 
 def insert_example_data():
