@@ -28,7 +28,7 @@ def longest_streak_all() -> tuple[Habit, int]:
         lenght = find_longest_streak(habit) * Period(habit.period).meta.length.days
         if lenght > max_len:
             max_len = lenght
-            max_habit = habit.name
+            max_habit = habit
 
     if max_habit is None:
         raise ValueError("No habits found, can't find the longest streak")
