@@ -22,6 +22,40 @@ habit --help
 
 Note: `py` is the python executable on Windows. If you use a different OS, substitute `py` with `python3`.
 
+## Usage
+```bash
+# See all available commands
+habit --help
+# Documentation on a specific command
+habit command --help
+# E.g.
+habit add --help
+
+# Populate the dabase with example habits and completions
+habit init
+
+# List habits
+habit list
+# List daily habits
+habit list --period daily
+# Or
+habit list -p d
+
+# Create new habit
+habit add -p w "Somehting I need to do every week"
+
+# Mark a habit that you have completed today
+habit mark "Somehting I need to do every week"
+
+# Delete a habit and its completions
+habit delete "Somehting I need to do every week"
+
+# Find a habit with the longest streak
+habit streak
+```
+
+Streaks for habits with different periods are compared base on total amount of days. E.g. 2 weeks is converted to 14 days, which means that a streak of 2 weeks will be reported as longer than a streak of 13 daily completions.
+
 ## Testing
 First, follow the installation steps.
 ```bash
