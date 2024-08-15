@@ -111,6 +111,8 @@ def streak(name: str | None):
     Find the longest streak.
     If no name name is provided, searches across all habits.
     If a name is provided, returns the longest streak for that habit.
+
+    Streaks for habits with different periods are compared base on total amount of days. E.g. 2 weeks is converted to 14 days, which means that a streak of 2 weeks will be reported as longer than a streak of 13 daily completions.
     """
     if name is not None:
         try:
