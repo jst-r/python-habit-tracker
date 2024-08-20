@@ -14,7 +14,12 @@ from period import Period
 
 
 def get_db_path():
-    """By default a folder in the users home directory, can be overwritten with the env variable `PYTHON_HABIT_TRACKER_DB_PATH`"""
+    """
+    Gets the path to the database.
+    By default a folder in the users home directory.
+    Can be overwritten with the env variable `PYTHON_HABIT_TRACKER_DB_PATH`.
+    It's a bit of a hacky but works fine.
+    """
     if path := os.getenv("PYTHON_HABIT_TRACKER_DB_PATH"):
         return path
 
