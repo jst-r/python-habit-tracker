@@ -42,7 +42,9 @@ class Habit(BaseModel):
     # Name is constrained unique to avoid user confusion
     name = CharField(unique=True)
     created_at = DateTimeField(default=date.today)
-    period = IntegerField()
+    period = (
+        IntegerField()
+    )  # Should be created from Period type instead of providing raw integer
 
 
 class Completion(BaseModel):
