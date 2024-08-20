@@ -10,21 +10,21 @@ It is written in Python and uses SQLite3 with Peewee ORM for data storage.
 Habit is developed using Python 3.12, however any reasonably modern version
 should work fine.
 
-```bash
+This installation procedure is to be executed in powershell on Windows. If you use a different OS, please modify python executable venv activation step.
+
+```powershell
 # Clone the source code
 git clone https://github.com/jst-r/python-habit-tracker.git
 # Move to the project directory
 cd python-habit-tracker
-# (optional) Initialize a virutal enviroment. Omit this step if you want to perform system wide installation. 
+# Initialize a virutal enviroment
 py -m venv virtual_enviroment
+.\virtual_enviroment\Scripts\activate
 # Install the project
-pip install .
+pip install -e .
 # Verify installation
-habit --help
+habit
 ```
-
-Note: `py` is the python executable on Windows. If you use a different OS,
-substitute `py` with `python3`.
 
 ## Usage
 
