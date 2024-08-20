@@ -69,6 +69,7 @@ def insert_example_data():
         habit.save()
 
         for delta in range(7 * 4):
+            # Random value mentioned in docsting
             if random.random() > COMPLETION_RATE:
                 continue
             completion = Completion(
@@ -81,6 +82,7 @@ def insert_example_data():
         habit.save()
 
         for delta in range(0, 7 * 4, 7):
+            # Random value mentioned in docsting
             if random.random() > COMPLETION_RATE:
                 continue
             completion = Completion(timestamp=start_time + timedelta(days=delta))
