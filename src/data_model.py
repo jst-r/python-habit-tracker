@@ -46,6 +46,11 @@ class Completion(BaseModel):
 
 
 def insert_example_data():
+    """
+    Inserts example data into the database.
+    Used for testing and providing example data for the user.
+    Completions are inserted based on a seeded random value. Because of that the same set of completions is inserted every time the function is executed. This was done to avoid hard-coding many values.
+    """
     RANDOM_SEED = 42
     COMPLETION_RATE = 0.8
 
