@@ -3,21 +3,23 @@ from typing import Callable
 from data_model import Habit
 from period import Period
 
-type Selector = Callable[[], list[Habit]]
+# A closure or function that takes no arguments and returns a list of habits.
+# Used to get analytics from an arbitrary selection of Habits.
+type HabitSelector = Callable[[], list[Habit]]
 
 
 def select_all() -> list[Habit]:
     return list(Habit.select())
 
 
-def make_period_selector(period: Period) -> Selector:
+def make_period_selector(period: Period) -> HabitSelector:
     def selector() -> list[Habit]:
         return list(Habit.select().where(Habit.period == period))
 
     return selector
 
 
-def get_habit_names(selector: Selector) -> list[str]:
+def get_habit_names(selector: HabitSelector) -> list[str]:
     return [str(habit.name) for habit in selector()]
 
 
