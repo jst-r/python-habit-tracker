@@ -58,6 +58,9 @@ def add(name: str, period: str):
     """
     try:
         new_habit(name, PERIOD_FROM_OPTION[period])
+        click.echo(
+            f"Create habit {name}. Now you can track it with `habit mark {name}`"
+        )
     except peewee.IntegrityError:
         click.echo("A habit with this name already exists")
 
@@ -68,6 +71,7 @@ def mark(name: str):
     """Mark a habit that you have completed today."""
     try:
         mark_completed(name)
+        click.echo(f"Recorded a completion of habit {name}.")
     except data_model.Habit.DoesNotExist:  # type: ignore ruff isn't smart enough to know it's there
         click.echo("Couldn't find a habit with this name")
 
@@ -99,7 +103,7 @@ def list(period: str | None):
 
     names = get_habit_names(selector)
 
-    click.echo("Here is the list of habits:")
+    click.echo("You currently track these habits:")
     for name in names:
         click.echo("\t" + name)
 
